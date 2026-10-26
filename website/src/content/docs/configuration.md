@@ -14,7 +14,7 @@ Converters can be added to support other types. Sibling modules adapt popular se
 ### Built-in converters
 
 * [Gson](https://github.com/google/gson): `com.squareup.retrofit2:converter-gson`
-* [Jackson](https://github.com/FasterXML/jackson): `com.squareup.retrofit2:converter-jackson`
+* [Jackson](https://github.com/FasterXML/jackson): `com.squareup.retrofit2:converter-jackson` - Supports [multiple formats](https://github.com/FasterXML/jackson#data-format-modules) (JSON, XML, CBOR, YAML, etc.) by supplying a different mapper and media type
 * [Moshi](https://github.com/square/moshi/): `com.squareup.retrofit2:converter-moshi`
 * [Protobuf](https://developers.google.com/protocol-buffers/): `com.squareup.retrofit2:converter-protobuf`
 * [Wire](https://github.com/square/wire): `com.squareup.retrofit2:converter-wire`
@@ -46,7 +46,7 @@ Two delegating converters are provided:
 
 ### Custom converters
 
-If you need to communicate with an API that uses a content-format that Retrofit does not support out of the box (e.g. YAML, txt, custom format) or you wish to use a different library to implement an existing format, you can easily create your own converter. Create a class that extends the [`Converter.Factory` class](https://github.com/square/retrofit/blob/master/retrofit/src/main/java/retrofit2/Converter.java) and pass in an instance when building your adapter.
+If you need to communicate with an API that uses a content-format that Retrofit does not support out of the box (e.g. YAML, txt, custom format) or you wish to use a different library to implement an existing format, you can easily create your own converter. Create a class that extends the [`Converter.Factory` class](https://github.com/lysine-dev/retrofit/blob/master/retrofit/src/main/java/retrofit2/Converter.java) and pass in an instance when building your adapter.
 
 ### Third-party converters
 
@@ -79,7 +79,7 @@ This allows API requests to seamlessly compose with any existing threading model
 ### Custom call adapters
 
 If you need to integration with a work library that Retrofit does not support out of the box, or you wish to use a different strategy to adapt an existing library, you can easily create your own call adapter.
-Create a class that extends the [`CallAdapter.Factory` class](https://github.com/square/retrofit/blob/master/retrofit/src/main/java/retrofit2/CallAdapter.java) for a target type, and return an adapter which wraps the built-in `Call`.
+Create a class that extends the [`CallAdapter.Factory` class](https://github.com/lysine-dev/retrofit/blob/master/retrofit/src/main/java/retrofit2/CallAdapter.java) for a target type, and return an adapter which wraps the built-in `Call`.
 
 ### Third-party call adapters
 

@@ -53,6 +53,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
+import retrofit2.http.QUERY;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.QueryName;
@@ -166,6 +167,8 @@ final class RequestFactoryBuilder {
       parseHttpMethodAndPath("PUT", ((PUT) annotation).value(), true);
     } else if (annotation instanceof OPTIONS) {
       parseHttpMethodAndPath("OPTIONS", ((OPTIONS) annotation).value(), false);
+    } else if (annotation instanceof QUERY) {
+      parseHttpMethodAndPath("QUERY", ((QUERY) annotation).value(), true);
     } else if (annotation instanceof HTTP) {
       HTTP http = (HTTP) annotation;
       parseHttpMethodAndPath(http.method(), http.path(), http.hasBody());

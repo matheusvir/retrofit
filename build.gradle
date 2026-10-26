@@ -1,4 +1,5 @@
 import net.ltgt.gradle.errorprone.CheckSeverity
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 buildscript {
   dependencies {
@@ -22,11 +23,13 @@ buildscript {
 subprojects {
   tasks.withType(JavaCompile).configureEach { task ->
     task.options.encoding = 'UTF-8'
+    task.sourceCompatibility = '1.8'
+    task.targetCompatibility = '1.8'
   }
 
-  plugins.withType(JavaBasePlugin).configureEach {
-    java.toolchain {
-      languageVersion.set(JavaLanguageVersion.of(8))
+  tasks.withType(KotlinJvmCompile).configureEach { task ->
+    task.kotlinOptions {
+      jvmTarget = '1.8'
     }
   }
 
@@ -42,7 +45,6 @@ subprojects {
   apply plugin: 'net.ltgt.errorprone'
 
   dependencies {
-    errorproneJavac libs.errorproneJavac
     errorprone libs.errorproneCore
   }
 
@@ -74,23 +76,19 @@ subprojects {
         signature 'net.sf.androidscents.signature:android-api-level-21:5.0.1_r2@signature'
       }
     }
+  }
 
-    plugins.apply('com.diffplug.spotless')
-    spotless {
-      java {
-        googleJavaFormat(libs.googleJavaFormat.get().version)
-          .formatJavadoc(false)
-        removeUnusedImports()
-        target 'src/*/java*/**/*.java'
-      }
-      kotlin {
-        ktlint(libs.ktlint.get().version)
-          .editorConfigOverride([
-            // Making something an expression body should be a choice around readability.
-            'ktlint_standard_function-expression-body': 'disabled',
-          ])
-        target 'src/**/*.kt'
-      }
+  plugins.apply('com.diffplug.spotless')
+  spotless {
+    java {
+      googleJavaFormat(libs.googleJavaFormat.get().version)
+        .formatJavadoc(false)
+      removeUnusedImports()
+      target 'src/**/*.java'
+    }
+    kotlin {
+      ktfmt(libs.ktfmt.get().version).googleStyle()
+      target 'src/**/*.kt'
     }
   }
 }
@@ -111,7 +109,7 @@ tasks.register('copyWebsiteDocs', Copy) {
 
     into(subproject.POM_ARTIFACT_ID) {
       if (subproject.plugins.hasPlugin('org.jetbrains.dokka')) {
-        from subproject.tasks.named('dokkaHtml').flatMap { it.outputDirectory }
+        from subproject.tasks.named('dokkaGeneratePublicationHtml').flatMap { it.outputDirectory }
       } else {
         from subproject.tasks.named('javadoc').map { it.destinationDir }
       }

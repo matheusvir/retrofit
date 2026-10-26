@@ -15,9 +15,7 @@
  */
 package retrofit2.keeper
 
-import com.google.auto.service.AutoService
 import javax.annotation.processing.AbstractProcessor
-import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.ExecutableElement
@@ -26,34 +24,30 @@ import javax.lang.model.type.DeclaredType
 import javax.lang.model.type.TypeMirror
 import javax.lang.model.type.WildcardType
 import javax.tools.StandardLocation.CLASS_OUTPUT
-import net.ltgt.gradle.incap.IncrementalAnnotationProcessor
-import net.ltgt.gradle.incap.IncrementalAnnotationProcessorType.ISOLATING
 
-@AutoService(Processor::class)
-@IncrementalAnnotationProcessor(ISOLATING)
 class RetrofitResponseTypeKeepProcessor : AbstractProcessor() {
   override fun getSupportedSourceVersion() = SourceVersion.latestSupported()
-  override fun getSupportedAnnotationTypes() = setOf(
-    "retrofit2.http.DELETE",
-    "retrofit2.http.GET",
-    "retrofit2.http.HEAD",
-    "retrofit2.http.HTTP",
-    "retrofit2.http.OPTIONS",
-    "retrofit2.http.PATCH",
-    "retrofit2.http.POST",
-    "retrofit2.http.PUT",
-  )
 
-  override fun process(
-    annotations: Set<TypeElement>,
-    roundEnv: RoundEnvironment,
-  ): Boolean {
+  override fun getSupportedAnnotationTypes() =
+    setOf(
+      "retrofit2.http.DELETE",
+      "retrofit2.http.GET",
+      "retrofit2.http.HEAD",
+      "retrofit2.http.HTTP",
+      "retrofit2.http.OPTIONS",
+      "retrofit2.http.PATCH",
+      "retrofit2.http.POST",
+      "retrofit2.http.PUT",
+    )
+
+  override fun process(annotations: Set<TypeElement>, roundEnv: RoundEnvironment): Boolean {
     val elements = processingEnv.elementUtils
     val types = processingEnv.typeUtils
 
-    val methods = supportedAnnotationTypes
-      .mapNotNull(elements::getTypeElement)
-      .flatMap(roundEnv::getElementsAnnotatedWith)
+    val methods =
+      supportedAnnotationTypes
+        .mapNotNull(elements::getTypeElement)
+        .flatMap(roundEnv::getElementsAnnotatedWith)
 
     val elementToReferencedTypes = mutableMapOf<TypeElement, MutableSet<String>>()
     for (method in methods) {
@@ -82,7 +76,7 @@ class RetrofitResponseTypeKeepProcessor : AbstractProcessor() {
       rules.openWriter().buffered().use { w ->
         w.write("# $typeName\n")
         for (referencedType in referencedTypes.sorted()) {
-          w.write("-keep,allowobfuscation,allowoptimization class $referencedType\n")
+          w.write("-keep,allowoptimization,allowshrinking,allowobfuscation class $referencedType\n")
         }
       }
     }

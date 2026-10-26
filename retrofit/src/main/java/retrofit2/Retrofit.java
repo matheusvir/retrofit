@@ -111,8 +111,9 @@ public final class Retrofit {
    * <p>The relative path for a given method is obtained from an annotation on the method describing
    * the request type. The built-in methods are {@link retrofit2.http.GET GET}, {@link
    * retrofit2.http.PUT PUT}, {@link retrofit2.http.POST POST}, {@link retrofit2.http.PATCH PATCH},
-   * {@link retrofit2.http.HEAD HEAD}, {@link retrofit2.http.DELETE DELETE} and {@link
-   * retrofit2.http.OPTIONS OPTIONS}. You can use a custom HTTP method with {@link HTTP @HTTP}. For
+   * {@link retrofit2.http.HEAD HEAD}, {@link retrofit2.http.DELETE DELETE},
+   * {@link retrofit2.http.OPTIONS OPTIONS}, and {@link retrofit2.http.QUERY QUERY}.
+   * You can use a custom HTTP method with {@link HTTP @HTTP}. For
    * a dynamic URL, omit the path on the annotation and annotate the first parameter with {@link
    * Url @Url}.
    *
@@ -597,12 +598,12 @@ public final class Retrofit {
      * replace the scheme of {@code baseUrl}.
      *
      * <p>Base URL: http://example.com/<br>
-     * Endpoint: https://github.com/square/retrofit/<br>
-     * Result: https://github.com/square/retrofit/
+     * Endpoint: https://github.com/lysine-dev/retrofit/<br>
+     * Result: https://github.com/lysine-dev/retrofit/
      *
      * <p>Base URL: http://example.com<br>
-     * Endpoint: //github.com/square/retrofit/<br>
-     * Result: http://github.com/square/retrofit/ (note the scheme stays 'http')
+     * Endpoint: //github.com/lysine-dev/retrofit/<br>
+     * Result: http://github.com/lysine-dev/retrofit/ (note the scheme stays 'http')
      */
     public Builder baseUrl(HttpUrl baseUrl) {
       Objects.requireNonNull(baseUrl, "baseUrl == null");
